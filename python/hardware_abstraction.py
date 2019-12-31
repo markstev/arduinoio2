@@ -1,5 +1,5 @@
 import serial
-import Queue
+import queue
 import logging
 
 class SerialConnection(object):
@@ -39,8 +39,8 @@ class FileSerialConnection(SerialConnection):
             self.outgoing_filename = outgoing_filename
         else:
             self.outgoing_filename = '/tmp/arduinoio_hw_abstraction_b_%s' % port
-        fcreate = open(self.incoming_filename, 'w')
-        fcreate.close()
+        with open(self.incoming_filename, 'w') as fcreate:
+            pass
         self.incoming = open(self.incoming_filename, 'rb')
         self.outgoing = open(self.outgoing_filename, 'wb')
         self.port = port
@@ -53,7 +53,7 @@ class FileSerialConnection(SerialConnection):
 
     def read(self):
         result = self.incoming.read(1)
-        if result == '':
+        if result == b'':
             # Avoids EOF getting set and skipping future reads.
             self.incoming.seek(self.incoming.tell())
         return result
@@ -65,8 +65,8 @@ class QueueSerialConnection(SerialConnection):
     def __init__(self, port, baud):
         self.port = port
         self.baud = baud
-        self.incoming = Queue.Queue(100)
-        self.outgoing = Queue.Queue(100)
+        self.incoming = queue.Queue(100)
+        self.outgoing = queue.Queue(100)
 
     def write(self, byte):
         self.outgoing.put(byte)
@@ -74,8 +74,8 @@ class QueueSerialConnection(SerialConnection):
     def read(self):
         try:
             return self.incoming.get(block=False)
-        except Queue.Empty:
-            return ''
+        except queue.Empty:
+            return b''
 
     def MakePair(self):
         new_queue = QueueSerialConnection(self.port, self.baud)

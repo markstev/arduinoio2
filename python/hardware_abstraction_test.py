@@ -7,16 +7,16 @@ class HardwareAbstractionTest(unittest.TestCase):
 
     def assertSerialWorks(self, serial_connection):
         serial_pair = serial_connection.MakePair()
-        self.assertEqual(serial_connection.read(), '')
-        self.assertEqual(serial_pair.read(), '')
-        serial_connection.write('z')
-        self.assertEqual(serial_connection.read(), '')
-        self.assertEqual(serial_pair.read(), 'z')
-        self.assertEqual(serial_pair.read(), '')
-        serial_pair.write('y')
-        self.assertEqual(serial_pair.read(), '')
-        self.assertEqual(serial_connection.read(), 'y')
-        self.assertEqual(serial_connection.read(), '')
+        self.assertEqual(serial_connection.read(), b'')
+        self.assertEqual(serial_pair.read(), b'')
+        serial_connection.write(b'z')
+        self.assertEqual(serial_connection.read(), b'')
+        self.assertEqual(serial_pair.read(), b'z')
+        self.assertEqual(serial_pair.read(), b'')
+        serial_pair.write(b'y')
+        self.assertEqual(serial_pair.read(), b'')
+        self.assertEqual(serial_connection.read(), b'y')
+        self.assertEqual(serial_connection.read(), b'')
 
     def test_queue_serial(self):
         queue_serial = hardware_abstraction.QueueSerialConnection('ha_test', 9600)

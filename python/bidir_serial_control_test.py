@@ -17,7 +17,7 @@ class SingleEndedTest(unittest.TestCase):
         self.assertTrue(self.serial_connection.incoming.empty())
         for char in chars:
             self.assertTrue(not self.serial_connection.outgoing.empty())
-            self.assertEqual(self.serial_connection.outgoing.get(), char)
+            self.assertEqual(self.serial_connection.outgoing.get(), bytes([ord(char)]))
         self.assertTrue(self.serial_connection.outgoing.empty())
 
     def test_run_rx_without_pair(self):

@@ -1,6 +1,6 @@
 from serial_control import Message, MessageToBytes
 from threading import Thread
-import Queue
+import queue
 import hardware_abstraction
 import logging
 import time
@@ -33,8 +33,8 @@ def ToChar(state, num_bytes=0):
             ERROR: 0x80
             }
     if state not in state_to_ord:
-        return chr(state_to_ord[ERROR])
-    return chr(state_to_ord[state] | num_bytes)
+        return bytes([state_to_ord[ERROR]])
+    return bytes([state_to_ord[state] | num_bytes])
 
 
 COMMUNICATION_TIMEOUT = 0.2  # seconds
@@ -64,8 +64,8 @@ class BidirSerialThread(Thread):
         self.rx_state = READY_AND_DONE
         self.tx_state = READY_AND_DONE
         self.last_communication_time = time.time()
-        self.rx_queue = Queue.Queue(5)
-        self.tx_queue = Queue.Queue(5)
+        self.rx_queue = queue.Queue(5)
+        self.tx_queue = queue.Queue(5)
         self.daemon = True
 
     def WriteMessage(self, address, command):
@@ -74,7 +74,7 @@ class BidirSerialThread(Thread):
     def ReadMessage(self, timeout):
         try:
             return self.rx_queue.get(timeout=timeout)
-        except Queue.Empty:
+        except queue.Empty:
             return None
 
     def run(self):
@@ -140,7 +140,7 @@ class BidirSerialThread(Thread):
                 self.transmit_bytes = MessageToBytes(address, command, send_checksums=False)
                 self.transmit_index = 0
                 self.tx_state = READY_AND_SENDING
-            except Queue.Empty:
+            except queue.Empty:
                 # This is expected and common; just nothing to send right now.
                 pass
         if self.tx_state == READY_AND_SENDING:
@@ -149,7 +149,7 @@ class BidirSerialThread(Thread):
         self.ser.write(ToChar(self.tx_state, num_bytes_to_send))
         if self.tx_state == READY_AND_SENDING:
             for i in range(num_bytes_to_send):
-                self.ser.write(self.transmit_bytes[self.transmit_index])
+                self.ser.write(bytes([ord(self.transmit_bytes[self.transmit_index])]))
                 self.transmit_index += 1
             if self.transmit_index == len(self.transmit_bytes):
                 self.tx_state = SENT_LAST

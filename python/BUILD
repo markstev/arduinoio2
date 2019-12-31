@@ -23,8 +23,6 @@ py_test(
     name = "hardware_abstraction_test",
     srcs = ["hardware_abstraction_test.py"],
     deps = [":hardware_abstraction"],
-    # TODO: Migrate to PY3.
-    python_version = "PY2",
 )
 
 py_test(
@@ -32,8 +30,6 @@ py_test(
     srcs = ["bidir_serial_control_test.py"],
     deps = [":bidir_serial_control",
             ":hardware_abstraction"],
-    # TODO: Migrate to PY3.
-    python_version = "PY2",
 )
 
 py_test(
@@ -42,6 +38,4 @@ py_test(
     deps = [":bidir_serial_control",
             ],
     data = ["//serial_link:bidir_serial_main_for_test"],
-    # TODO: Migrate to PY3.
-    python_version = "PY2",
 )
