@@ -1,0 +1,8 @@
+*.swp
+*.swn
+*.swo
+*.swm
+bazel-bin
+bazel-out
+bazel-testlogs
+bazel-arduinoio2
