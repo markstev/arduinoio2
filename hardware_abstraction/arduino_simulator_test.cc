@@ -10,6 +10,18 @@ TEST(HardwareAbstractionTest, WriteSomePins) {
   digitalWrite(1, true);
   digitalWrite(1, false);
   EXPECT_EQ(false, digitalRead(2));
+  EXPECT_EQ(false, digitalRead(1));
+  digitalWrite(1, true);
+  EXPECT_EQ(true, digitalRead(1));
+  digitalWrite(10, true);
+  EXPECT_EQ(true, digitalRead(10));
+}
+
+TEST(HardwareAbstractionTest, WriteSomePins2) {
+  digitalWrite(10, true);
+  EXPECT_EQ(true, digitalRead(10));
+  digitalWrite(10, false);
+  EXPECT_EQ(false, digitalRead(10));
 }
 
 TEST(HardwareAbstractionTest, SerialIO) {
