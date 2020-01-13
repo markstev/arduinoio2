@@ -4,9 +4,11 @@
 #include <stdio.h>
 
 // This interface mimics Arduino.h, so it can be used as a drop-in replacement.
+namespace arduinoio {
 
 void digitalWrite(const unsigned int pin, bool value);
 bool digitalRead(const unsigned int pin);
+unsigned long micros();
 
 // Interface for a variety of ways to check the current time, including fake clocks.
 class Clock {
@@ -29,8 +31,6 @@ class FakeClock : public Clock {
 
 FakeClock* GetFakeClock();
 
-unsigned long micros();
-
 class SerialAbstraction {
  public:
    ~SerialAbstraction();
@@ -44,5 +44,7 @@ class SerialAbstraction {
   FILE *incoming_file_, *outgoing_file_;
   int next_byte_ = EOF;
 };
+
+}  // namespace arduinoio
 
 #endif

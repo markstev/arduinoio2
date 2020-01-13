@@ -30,4 +30,3 @@ cc_binary(
         "//hardware_abstraction:arduino_simulator",
     ],
 )
-

@@ -3,6 +3,7 @@
 #include <gtest/gtest.h>
 #include "arduino_simulator.h"
 
+namespace arduinoio {
 namespace {
 
 TEST(HardwareAbstractionTest, WriteSomePins) {
@@ -51,3 +52,4 @@ TEST(HardwareAbstractionTest, SerialIO) {
 }
 
 }  // namespace
+}  // namespace arduinoio

@@ -3,6 +3,7 @@
 #include <ctime>
 #include <map>
 
+namespace arduinoio {
 namespace {
 bool CreateAndCloseFile(const char *filename) {
   FILE *f = fopen(filename, "w");
@@ -75,18 +76,6 @@ FakeClock* GetFakeClock() {
 }
 
 
-unsigned long micros() {
-  return GetClock()->micros();
-}
-
-void digitalWrite(const unsigned int pin, bool value) {
-  GetPins().SetPin(pin, value);
-}
-
-bool digitalRead(const unsigned int pin) {
-  return GetPins().GetPin(pin);
-}
-
 SerialAbstraction::~SerialAbstraction() {
   fclose(incoming_file_);
   fclose(outgoing_file_);
@@ -135,3 +124,17 @@ bool SerialAbstraction::UseFiles(const char *incoming, const char *outgoing) {
   outgoing_file_ = fopen(outgoing, "wb+");
   return incoming_file_ != nullptr && outgoing_file_ != nullptr;
 }
+
+unsigned long micros() {
+  return GetClock()->micros();
+}
+
+void digitalWrite(const unsigned int pin, bool value) {
+  GetPins().SetPin(pin, value);
+}
+
+bool digitalRead(const unsigned int pin) {
+  return GetPins().GetPin(pin);
+}
+
+}  // namespace arduinoio

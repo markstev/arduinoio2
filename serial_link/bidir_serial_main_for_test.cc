@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
     printf("Call with args:\nbidir_serial_main <incoming serial filename> <outgoing serial filename> <address>");
     return 1;
   }
-  SerialAbstraction module_serial;
+  arduinoio::SerialAbstraction module_serial;
   module_serial.UseFiles(argv[1], argv[2]);
   arduinoio::BidirSerialRXModule module(&module_serial, atoi(argv[3]));
   char message[7] = "COUNT\0";
